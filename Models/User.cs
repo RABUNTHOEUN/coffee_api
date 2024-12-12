@@ -2,18 +2,18 @@
 {
     public class User
     {
-        public int UserId { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
-        public string Role { get; set; } // 'customer', 'staff', 'admin'
-        public string PhoneNumber { get; set; }
+        public int Id { get; set; }
+        public string FirstName { get; set; } = string.Empty;
+        public string LastName { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
+        public string Role { get; set; } = string.Empty; // 'customer', 'staff', 'admin'
+        public string PhoneNumber { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
 
-        public ICollection<Order> Orders { get; set; }
-        public ICollection<Review> Reviews { get; set; }
-        public ICollection<StaffShift> StaffShifts { get; set; }
+        public List<Order> orders{ get; set; } = new List<Order>();
+        public List<Review> Reviews { get; set; } = new List<Review>();
+        public List<StaffShift> StaffShifts { get; set; } = new List<StaffShift>();
     }
 }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using thoeun_coffee.Data;
 
@@ -11,9 +12,11 @@ using thoeun_coffee.Data;
 namespace thoeun_coffee.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241212153806_init_1")]
+    partial class init_1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -115,7 +118,7 @@ namespace thoeun_coffee.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("InventoryId"));
 
-                    b.Property<int?>("ProductId")
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("RestockDate")
@@ -126,8 +129,7 @@ namespace thoeun_coffee.Migrations
 
                     b.HasKey("InventoryId");
 
-                    b.HasIndex("ProductId")
-                        .IsUnique();
+                    b.HasIndex("ProductId");
 
                     b.ToTable("Inventories");
                 });
@@ -151,13 +153,10 @@ namespace thoeun_coffee.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int?>("PaymentId")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("TotalAmount")
                         .HasColumnType("decimal(65,30)");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("OrderId");
@@ -175,13 +174,13 @@ namespace thoeun_coffee.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("OrderItemId"));
 
-                    b.Property<int?>("OrderId")
+                    b.Property<int>("OrderId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(65,30)");
 
-                    b.Property<int?>("ProductId")
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<int>("Quantity")
@@ -207,7 +206,7 @@ namespace thoeun_coffee.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(65,30)");
 
-                    b.Property<int?>("OrderId")
+                    b.Property<int>("OrderId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("PaymentDate")
@@ -219,8 +218,7 @@ namespace thoeun_coffee.Migrations
 
                     b.HasKey("PaymentId");
 
-                    b.HasIndex("OrderId")
-                        .IsUnique();
+                    b.HasIndex("OrderId");
 
                     b.ToTable("Payments");
                 });
@@ -247,9 +245,6 @@ namespace thoeun_coffee.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int?>("InventoryId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -275,7 +270,7 @@ namespace thoeun_coffee.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("ReviewId"));
 
-                    b.Property<int?>("ProductId")
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<int>("Rating")
@@ -288,7 +283,7 @@ namespace thoeun_coffee.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("ReviewId");
@@ -317,7 +312,7 @@ namespace thoeun_coffee.Migrations
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("ShiftId");
@@ -373,8 +368,10 @@ namespace thoeun_coffee.Migrations
             modelBuilder.Entity("thoeun_coffee.Models.Inventory", b =>
                 {
                     b.HasOne("thoeun_coffee.Models.Product", "Product")
-                        .WithOne("Inventories")
-                        .HasForeignKey("thoeun_coffee.Models.Inventory", "ProductId");
+                        .WithMany("Inventories")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Product");
                 });
@@ -382,8 +379,10 @@ namespace thoeun_coffee.Migrations
             modelBuilder.Entity("thoeun_coffee.Models.Order", b =>
                 {
                     b.HasOne("thoeun_coffee.Models.User", "User")
-                        .WithMany("orders")
-                        .HasForeignKey("UserId");
+                        .WithMany("Orders")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -392,11 +391,15 @@ namespace thoeun_coffee.Migrations
                 {
                     b.HasOne("thoeun_coffee.Models.Order", "Order")
                         .WithMany("OrderItems")
-                        .HasForeignKey("OrderId");
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("thoeun_coffee.Models.Product", "Product")
                         .WithMany("OrderItems")
-                        .HasForeignKey("ProductId");
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Order");
 
@@ -406,8 +409,10 @@ namespace thoeun_coffee.Migrations
             modelBuilder.Entity("thoeun_coffee.Models.Payment", b =>
                 {
                     b.HasOne("thoeun_coffee.Models.Order", "Order")
-                        .WithOne("Payment")
-                        .HasForeignKey("thoeun_coffee.Models.Payment", "OrderId");
+                        .WithMany("Payments")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Order");
                 });
@@ -425,11 +430,15 @@ namespace thoeun_coffee.Migrations
                 {
                     b.HasOne("thoeun_coffee.Models.Product", "Product")
                         .WithMany("Reviews")
-                        .HasForeignKey("ProductId");
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("thoeun_coffee.Models.User", "User")
                         .WithMany("Reviews")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Product");
 
@@ -440,7 +449,9 @@ namespace thoeun_coffee.Migrations
                 {
                     b.HasOne("thoeun_coffee.Models.User", "User")
                         .WithMany("StaffShifts")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -454,7 +465,7 @@ namespace thoeun_coffee.Migrations
                 {
                     b.Navigation("OrderItems");
 
-                    b.Navigation("Payment");
+                    b.Navigation("Payments");
                 });
 
             modelBuilder.Entity("thoeun_coffee.Models.Product", b =>
@@ -468,11 +479,11 @@ namespace thoeun_coffee.Migrations
 
             modelBuilder.Entity("thoeun_coffee.Models.User", b =>
                 {
+                    b.Navigation("Orders");
+
                     b.Navigation("Reviews");
 
                     b.Navigation("StaffShifts");
-
-                    b.Navigation("orders");
                 });
 #pragma warning restore 612, 618
         }

@@ -12,8 +12,8 @@ using thoeun_coffee.Data;
 namespace thoeun_coffee.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241210162052_initDb_v1")]
-    partial class initDb_v1
+    [Migration("20241212151626_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,11 +27,11 @@ namespace thoeun_coffee.Migrations
 
             modelBuilder.Entity("thoeun_coffee.Models.Category", b =>
                 {
-                    b.Property<int>("CategoryId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("CategoryId"));
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -41,7 +41,7 @@ namespace thoeun_coffee.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.HasKey("CategoryId");
+                    b.HasKey("Id");
 
                     b.ToTable("Categories");
                 });

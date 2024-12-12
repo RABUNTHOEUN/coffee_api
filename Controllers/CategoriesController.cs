@@ -20,7 +20,7 @@ namespace thoeun_coffee.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
         {
-            return await _context.Categories.ToListAsync();
+            return await _context.Categories.Include(c => c.Products).ToListAsync();
         }
 
         // GET: api/categories/5
@@ -44,14 +44,14 @@ namespace thoeun_coffee.Controllers
             _context.Categories.Add(category);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetCategory), new { id = category.CategoryId }, category);
+            return CreatedAtAction(nameof(GetCategory), new { id = category.Id }, category);
         }
 
         // PUT: api/categories/5
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCategory(int id, Category category)
         {
-            if (id != category.CategoryId)
+            if (id != category.Id)
             {
                 return BadRequest();
             }
@@ -95,7 +95,7 @@ namespace thoeun_coffee.Controllers
 
         private bool CategoryExists(int id)
         {
-            return _context.Categories.Any(e => e.CategoryId == id);
+            return _context.Categories.Any(e => e.Id == id);
         }
     }
 }

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "WHuItJUXtYM=",
+  "dgSpecHash": "NAEIUlfU3D0=",
   "success": true,
-  "projectFilePath": "D:\\YEAR IV\\ASP.Net\\coffee_api\\thoeun_coffee.csproj",
+  "projectFilePath": "D:\\YEAR IV\\ASP.Net\\Coffee\\coffee_api\\thoeun_coffee.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\thoeu\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\thoeu\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\6.0.0\\microsoft.bcl.asyncinterfaces.6.0.0.nupkg.sha512",

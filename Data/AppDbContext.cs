@@ -1,11 +1,10 @@
-﻿
-using thoeun_coffee.Models;
+﻿using thoeun_coffee.Models;
 
 namespace thoeun_coffee.Data
 {
     public class AppDbContext : DbContext
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+        public AppDbContext(DbContextOptions dbContextOptions) : base(options: dbContextOptions) { }
 
         public DbSet<User> Users { get; set; }
         public DbSet<Product> Products { get; set; }
@@ -21,61 +20,53 @@ namespace thoeun_coffee.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Define relationships and constraints
-
-            // User-Order relationship
+            // One-to-many relationships
             modelBuilder.Entity<User>()
-                .HasMany(u => u.Orders)
+                .HasMany(u => u.orders)
                 .WithOne(o => o.User)
                 .HasForeignKey(o => o.UserId);
+                
 
-            // Product-Category relationship
-            modelBuilder.Entity<Product>()
-                .HasOne(p => p.Category)
-                .WithMany(c => c.Products)
-                .HasForeignKey(p => p.CategoryId);
-
-            // Order-OrderItem relationship
             modelBuilder.Entity<Order>()
                 .HasMany(o => o.OrderItems)
                 .WithOne(oi => oi.Order)
                 .HasForeignKey(oi => oi.OrderId);
 
-            // Product-OrderItem relationship
             modelBuilder.Entity<Product>()
                 .HasMany(p => p.OrderItems)
                 .WithOne(oi => oi.Product)
                 .HasForeignKey(oi => oi.ProductId);
 
-            // User-Review relationship
+            modelBuilder.Entity<Category>()
+                .HasMany(c => c.Products)
+                .WithOne(p => p.Category)
+                .HasForeignKey(p => p.CategoryId);
+
             modelBuilder.Entity<User>()
                 .HasMany(u => u.Reviews)
                 .WithOne(r => r.User)
                 .HasForeignKey(r => r.UserId);
 
-            // Product-Review relationship
             modelBuilder.Entity<Product>()
                 .HasMany(p => p.Reviews)
                 .WithOne(r => r.Product)
                 .HasForeignKey(r => r.ProductId);
 
-            // User-StaffShift relationship
             modelBuilder.Entity<User>()
                 .HasMany(u => u.StaffShifts)
                 .WithOne(ss => ss.User)
                 .HasForeignKey(ss => ss.UserId);
 
-            // Order-Payment relationship
-            modelBuilder.Entity<Order>()
-                .HasMany(o => o.Payments)
-                .WithOne(p => p.Order)
-                .HasForeignKey(p => p.OrderId);
-
-            // Product-Inventory relationship
+            // One-to-one relationships
             modelBuilder.Entity<Product>()
-                .HasMany(p => p.Inventories)
+                .HasOne(p => p.Inventories)
                 .WithOne(i => i.Product)
-                .HasForeignKey(i => i.ProductId);
+                .HasForeignKey<Inventory>(i => i.ProductId);
+
+            modelBuilder.Entity<Order>()
+                .HasOne(o => o.Payment)
+                .WithOne(p => p.Order)
+                .HasForeignKey<Payment>(p => p.OrderId);
 
             base.OnModelCreating(modelBuilder);
         }
