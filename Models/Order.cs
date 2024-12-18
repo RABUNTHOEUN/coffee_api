@@ -1,4 +1,6 @@
-﻿namespace thoeun_coffee.Models
+﻿using System.Text.Json.Serialization;
+
+namespace thoeun_coffee.Models
 {
     public class Order
     {
@@ -10,8 +12,11 @@
         public DateTime OrderDate { get; set; }
         public string DeliveryAddress { get; set; } = string.Empty;
 
+        [JsonIgnore]
         public User? User { get; set; }
-        public Payment? Payment{ get; set; }
+        [JsonIgnore]
+        public Payment? Payment { get; set; }
+        // [JsonIgnore]
         public List<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
     }
 }

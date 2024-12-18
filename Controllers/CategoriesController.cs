@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using coffee_api.Dtos.Category;
+using coffee_api.Mappers;
 using Microsoft.AspNetCore.Mvc;
 using thoeun_coffee.Data;
 using thoeun_coffee.Models;
@@ -18,84 +19,118 @@ namespace thoeun_coffee.Controllers
 
         // GET: api/categories
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
+        public async Task<IActionResult> GetAllCategories()
         {
-            return await _context.Categories.Include(c => c.Products).ToListAsync();
+            var categories = await _context.Categories
+                .Include(c => c.Products)
+                .Select(c => c.ToCategoryDto())
+                .ToListAsync();
+
+            return Ok(categories);
         }
 
-        // GET: api/categories/5
+        // GET: api/categories/{id}
         [HttpGet("{id}")]
-        public async Task<ActionResult<Category>> GetCategory(int id)
+        public async Task<IActionResult> GetCategory(int id)
         {
-            var category = await _context.Categories.FindAsync(id);
+            var category = await _context.Categories
+                .Include(c => c.Products)
+                .FirstOrDefaultAsync(c => c.Id == id);
 
             if (category == null)
             {
-                return NotFound();
+                return NotFound(new { Message = $"Category with ID {id} not found." });
             }
 
-            return category;
+            return Ok(category.ToCategoryDto());
         }
 
         // POST: api/categories
         [HttpPost]
-        public async Task<ActionResult<Category>> CreateCategory(Category category)
+        public async Task<IActionResult> CreateCategory([FromBody] CreateCategoryDto createCategoryDto)
         {
+            // Create a new category entity from the DTO
+            var category = new Category
+            {
+                Name = createCategoryDto.Name,
+                Description = createCategoryDto.Description
+            };
+
+            // Add the category to the database
             _context.Categories.Add(category);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetCategory), new { id = category.Id }, category);
+            // Prepare the response with a message and the created category data
+            var response = new
+            {
+                Message = "Category created successfully.",
+                Data = category.ToCategoryDto()
+            };
+
+            // Return a 201 Created response with the custom message and data
+            return CreatedAtAction(nameof(GetCategory), new { id = category.Id }, response);
         }
 
-        // PUT: api/categories/5
+
+        // PUT: api/categories/{id}
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCategory(int id, Category category)
+        public async Task<IActionResult> UpdateCategory(int id, [FromBody] UpdateCategoryDto updateCategoryDto)
         {
-            if (id != category.Id)
+            // Find the category by ID
+            var category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == id);
+
+            // Check if the category exists
+            if (category == null)
             {
-                return BadRequest();
+                return NotFound(new { Message = $"Category with ID {id} not found." });
             }
 
-            _context.Entry(category).State = EntityState.Modified;
+            // Update entity properties
+            category.Name = updateCategoryDto.Name;
+            category.Description = updateCategoryDto.Description;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CategoryExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            // Save changes to the database
+            await _context.SaveChangesAsync();
 
-            return NoContent();
+            // Return a response with a success message and the updated data
+            var response = new
+            {
+                Message = $"Category with ID {id} updated successfully.",
+                Data = category.ToCategoryDto() // Convert to DTO for the response
+            };
+
+            return Ok(response);
         }
 
-        // DELETE: api/categories/5
+
+        // DELETE: api/categories/{id}
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCategory(int id)
         {
-            var category = await _context.Categories.FindAsync(id);
+            var category = await _context.Categories
+                .Include(c => c.Products)
+                .FirstOrDefaultAsync(c => c.Id == id);
+
             if (category == null)
             {
-                return NotFound();
+                return NotFound(new { Message = $"Category with ID {id} not found." });
+            }
+
+            if (category.Products.Any())
+            {
+                return BadRequest(new { Message = "Cannot delete a category with associated products." });
             }
 
             _context.Categories.Remove(category);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(new { Message = $"Category with ID {id} deleted successfully." });
         }
 
-        private bool CategoryExists(int id)
+        // Private method to check if a category exists
+        private async Task<bool> CategoryExists(int id)
         {
-            return _context.Categories.Any(e => e.Id == id);
+            return await _context.Categories.AnyAsync(e => e.Id == id);
         }
     }
 }

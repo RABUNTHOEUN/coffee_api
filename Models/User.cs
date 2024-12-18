@@ -1,4 +1,6 @@
-﻿namespace thoeun_coffee.Models
+﻿using System.Text.Json.Serialization;
+
+namespace thoeun_coffee.Models
 {
     public class User
     {
@@ -12,8 +14,11 @@
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
 
+        // [JsonIgnore]
         public List<Order> orders{ get; set; } = new List<Order>();
+        // [JsonIgnore]
         public List<Review> Reviews { get; set; } = new List<Review>();
+        // [JsonIgnore]
         public List<StaffShift> StaffShifts { get; set; } = new List<StaffShift>();
     }
 }

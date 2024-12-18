@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using coffee_api.Dtos.Product;
 using Microsoft.AspNetCore.Mvc;
 using thoeun_coffee.Data;
 using thoeun_coffee.Models;
@@ -18,63 +18,72 @@ namespace thoeun_coffee.Controllers
 
         // GET: api/products
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
+        public async Task<ActionResult<IEnumerable<ProductDto>>> GetProducts()
         {
-            return await _context.Products.Include(p => p.Category).ToListAsync();
+            var products = await _context.Products.Include(p => p.Category).ToListAsync();
+
+            var productDtos = products.Select(p => new ProductDto
+            {
+                Id = p.Id,
+                Name = p.Name,
+                Description = p.Description,
+                Price = p.Price,
+                CategoryId = p.CategoryId,
+                CategoryName = p.Category?.Name,
+            });
+
+            return Ok(productDtos);
         }
 
         // GET: api/products/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Product>> GetProduct(int id)
+        public async Task<ActionResult<ProductDto>> GetProduct(int id)
         {
             var product = await _context.Products.Include(p => p.Category).FirstOrDefaultAsync(p => p.Id == id);
 
             if (product == null)
             {
-                return NotFound();
+                return NotFound(new { Message = $"Product with ID {id} not found." });
             }
 
-            return product;
+            var productDto = new ProductDto
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Description = product.Description,
+                Price = product.Price,
+                CategoryId = product.CategoryId,
+                CategoryName = product.Category?.Name
+            };
+
+            return Ok(productDto);
         }
 
         // POST: api/products
         [HttpPost]
-        public async Task<ActionResult<Product>> CreateProduct(Product product)
-        {
-            _context.Products.Add(product);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetProduct), new { id = product.Id }, product);
-        }
+        // public IActionResult CreateProduct([FromBody] CreateProductDto productDto){
+            
+        // }
 
         // PUT: api/products/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProduct(int id, Product product)
+        public async Task<IActionResult> UpdateProduct(int id, UpdateProductDto updateProductDto)
         {
-            if (id != product.Id)
+            var product = await _context.Products.FindAsync(id);
+
+            if (product == null)
             {
-                return BadRequest();
+                return NotFound(new { Message = $"Product with ID {id} not found." });
             }
 
-            _context.Entry(product).State = EntityState.Modified;
+            product.Name = updateProductDto.Name;
+            product.Description = updateProductDto.Description;
+            product.Price = updateProductDto.Price;
+            product.CategoryId = updateProductDto.CategoryId;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProductExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(new { Message = $"Product with ID {id} updated successfully." });
         }
 
         // DELETE: api/products/5
@@ -82,21 +91,21 @@ namespace thoeun_coffee.Controllers
         public async Task<IActionResult> DeleteProduct(int id)
         {
             var product = await _context.Products.FindAsync(id);
+
             if (product == null)
             {
-                return NotFound();
+                return NotFound(new { Message = $"Product with ID {id} not found." });
             }
 
             _context.Products.Remove(product);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(new { Message = $"Product with ID {id} deleted successfully." });
         }
 
         private bool ProductExists(int id)
         {
             return _context.Products.Any(e => e.Id == id);
         }
-    
-}
+    }
 }

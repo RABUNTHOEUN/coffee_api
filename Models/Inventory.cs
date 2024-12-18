@@ -1,4 +1,6 @@
-﻿namespace thoeun_coffee.Models
+﻿using System.Text.Json.Serialization;
+
+namespace thoeun_coffee.Models
 {
     public class Inventory
     {
