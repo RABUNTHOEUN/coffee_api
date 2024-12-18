@@ -1,5 +1,6 @@
 
 using thoeun_coffee.Data;
+using thoeun_coffee.Services;
 
 namespace thoeun_coffee
 {
@@ -19,6 +20,9 @@ namespace thoeun_coffee
             });
 
             builder.Services.AddControllers();
+            // Register JwtService for Dependency Injection
+            builder.Services.AddScoped<JwtService>();  // Or AddSingleton<JwtService>() if it should be a singleton
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();

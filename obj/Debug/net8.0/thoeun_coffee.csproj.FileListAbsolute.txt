@@ -341,3 +341,8 @@ D:\YEAR IV\ASP.Net\Coffee\coffee_api\obj\Debug\net8.0\refint\thoeun_coffee.dll
 D:\YEAR IV\ASP.Net\Coffee\coffee_api\obj\Debug\net8.0\thoeun_coffee.pdb
 D:\YEAR IV\ASP.Net\Coffee\coffee_api\obj\Debug\net8.0\thoeun_coffee.genruntimeconfig.cache
 D:\YEAR IV\ASP.Net\Coffee\coffee_api\obj\Debug\net8.0\ref\thoeun_coffee.dll
+D:\YEAR IV\ASP.Net\Coffee\coffee_api\bin\Debug\net8.0\BCrypt.Net-Next.dll
+D:\YEAR IV\ASP.Net\Coffee\coffee_api\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\YEAR IV\ASP.Net\Coffee\coffee_api\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+D:\YEAR IV\ASP.Net\Coffee\coffee_api\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+D:\YEAR IV\ASP.Net\Coffee\coffee_api\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
