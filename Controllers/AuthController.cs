@@ -76,7 +76,18 @@ namespace thoeun_coffee.Controllers
             // Generate JWT token
             var token = _jwtService.GenerateJwtToken(user);
 
-            return Ok(new { Token = token });
+            return Ok(new
+            {
+                Token = token,
+                User = new
+                {
+                    Id = user.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email
+                    // Add other properties as needed
+                }
+            });
         }
 
     }
