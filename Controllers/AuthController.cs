@@ -40,9 +40,23 @@ namespace thoeun_coffee.Controllers
             };
 
             _context.Users.Add(user);
+            // Generate JWT token
+            var token = _jwtService.GenerateJwtToken(user);
             await _context.SaveChangesAsync();
 
-            return Ok(new { message = "User registered successfully" });
+            return Ok(new
+            {
+                message = "User registered successfully",
+                Token = token,
+                User = new
+                {
+                    Id = user.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email
+                    // Add other properties as needed
+                }
+            });
         }
 
         // Login
