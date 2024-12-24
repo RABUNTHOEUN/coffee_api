@@ -60,10 +60,20 @@ namespace thoeun_coffee.Controllers
         }
 
         // POST: api/products
+        // POST: api/Product
         [HttpPost]
-        // public IActionResult CreateProduct([FromBody] CreateProductDto productDto){
-            
-        // }
+        public async Task<IActionResult> CreateProduct([FromBody] Product product)
+        {
+            if (product == null)
+            {
+                return BadRequest("Product data is required.");
+            }
+
+            _context.Products.Add(product);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetProduct", new { id = product.Id }, product);
+        }
 
         // PUT: api/products/5
         [HttpPut("{id}")]
