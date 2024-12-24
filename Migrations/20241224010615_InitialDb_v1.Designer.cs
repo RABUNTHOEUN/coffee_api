@@ -12,8 +12,8 @@ using thoeun_coffee.Data;
 namespace thoeun_coffee.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241213072018_init_3")]
-    partial class init_3
+    [Migration("20241224010615_InitialDb_v1")]
+    partial class InitialDb_v1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -368,7 +368,6 @@ namespace thoeun_coffee.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("Role")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<DateTime>("UpdatedAt")
