@@ -1,9 +1,5 @@
 using coffee_api.Dtos.Account;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 using thoeun_coffee.Data;
 using thoeun_coffee.Models;
 using thoeun_coffee.Services;

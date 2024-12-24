@@ -40,12 +40,6 @@
       "Microsoft.AspNetCore.Authentication.JwtBearer/8.0.11": {
         "dependencies": {
           "Microsoft.IdentityModel.Protocols.OpenIdConnect": "7.1.2"
-        },
-        "runtime": {
-          "lib/net8.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll": {
-            "assemblyVersion": "8.0.11.0",
-            "fileVersion": "8.0.1124.52116"
-          }
         }
       },
       "Microsoft.Bcl.AsyncInterfaces/6.0.0": {
@@ -456,24 +450,12 @@
         "dependencies": {
           "Microsoft.IdentityModel.Logging": "7.1.2",
           "Microsoft.IdentityModel.Tokens": "7.1.2"
-        },
-        "runtime": {
-          "lib/net8.0/Microsoft.IdentityModel.Protocols.dll": {
-            "assemblyVersion": "7.1.2.0",
-            "fileVersion": "7.1.2.41121"
-          }
         }
       },
       "Microsoft.IdentityModel.Protocols.OpenIdConnect/7.1.2": {
         "dependencies": {
           "Microsoft.IdentityModel.Protocols": "7.1.2",
           "System.IdentityModel.Tokens.Jwt": "7.1.2"
-        },
-        "runtime": {
-          "lib/net8.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll": {
-            "assemblyVersion": "7.1.2.0",
-            "fileVersion": "7.1.2.41121"
-          }
         }
       },
       "Microsoft.IdentityModel.Tokens/7.1.2": {
