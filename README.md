@@ -26,6 +26,7 @@
 1. **Clone the Repository:**
    ```bash
    git clone https://github.com/RABUNTHOEUN/coffee_api.git
+   ```
 Create the Database:
 
 Create a new database named ### coffee in MySQL.
@@ -35,29 +36,39 @@ Run the following command to apply the database migration:
 
     ```bash
     dotnet ef database update
+    ```
 If no migration exists, create one using:
 
     ```bash
     dotnet ef migrations add InitialCreate
+    ```
 Then, run the update command again:
 
     ```bash
     dotnet ef database update
+    ```
 ### Run the Application:
 
 
     ```bash
     dotnet watch run
+    ```
 Steps to Run the Dashboard:
 Clone the Dashboard Repository:
 
 
-git clone https://github.com/RABUNTHOEUN/coffee-dashboard.git
+    ```bash
+    git clone https://github.com/RABUNTHOEUN/coffee-dashboard.git
+    ```
 Install Dependencies:
 
 
-npm install
+    ```bash
+    npm install
+    ```
 Start the Development Server:
 
 
-npm run dev
+```bash
+    npm run dev
+```
