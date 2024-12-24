@@ -462,3 +462,7 @@ C:\Users\THOEUN\next js\Coffee\coffee_api\obj\Debug\net8.0\refint\thoeun_coffee.
 C:\Users\THOEUN\next js\Coffee\coffee_api\obj\Debug\net8.0\thoeun_coffee.pdb
 C:\Users\THOEUN\next js\Coffee\coffee_api\obj\Debug\net8.0\thoeun_coffee.genruntimeconfig.cache
 C:\Users\THOEUN\next js\Coffee\coffee_api\obj\Debug\net8.0\ref\thoeun_coffee.dll
+C:\Users\THOEUN\next js\Coffee\coffee_api\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\THOEUN\next js\Coffee\coffee_api\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\THOEUN\next js\Coffee\coffee_api\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\THOEUN\next js\Coffee\coffee_api\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll

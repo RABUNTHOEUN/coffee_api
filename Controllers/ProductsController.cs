@@ -22,7 +22,7 @@ namespace thoeun_coffee.Controllers
         {
             var products = await _context.Products.Include(p => p.Category).ToListAsync();
 
-            var productDtos = products.Select(p => new ProductDto
+            var productDtos = products.OrderByDescending(p => p.CreatedAt).Select(p => new ProductDto
             {
                 Id = p.Id,
                 Name = p.Name,
@@ -59,7 +59,6 @@ namespace thoeun_coffee.Controllers
             return Ok(productDto);
         }
 
-        // POST: api/products
         // POST: api/Product
         [HttpPost]
         public async Task<IActionResult> CreateProduct([FromBody] Product product)
@@ -93,7 +92,10 @@ namespace thoeun_coffee.Controllers
 
             await _context.SaveChangesAsync();
 
-            return Ok(new { Message = $"Product with ID {id} updated successfully." });
+            return Ok(new {
+                 Message = $"Product with ID {id} updated successfully." ,
+                 product
+                 });
         }
 
         // DELETE: api/products/5

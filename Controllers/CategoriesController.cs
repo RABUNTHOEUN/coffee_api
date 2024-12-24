@@ -23,6 +23,7 @@ namespace thoeun_coffee.Controllers
         {
             var categories = await _context.Categories
                 .Include(c => c.Products)
+                .OrderByDescending(c => c.CreatedAt)
                 .Select(c => c.ToCategoryDto())
                 .ToListAsync();
 
