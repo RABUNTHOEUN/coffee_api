@@ -65,14 +65,12 @@ npm run dev
 Contribution
 Feel free to fork the repository and submit pull requests to contribute to the project.
 
-License
-This project is open-source and available under the MIT License.
 
 Contact
 For any queries or issues, feel free to contact:
 
 Name: Ra Bunthoeun
-Email: rabunthoeun@gmail.com
-Website: longsoeng.website
-YouTube Channel: @rabunthoeun7105
+Email: rabunthoeun7777@gmail.com
+Website: rabunthoeun.online
+YouTube Channel: @rabunthoeun
 Happy coding! 🚀
