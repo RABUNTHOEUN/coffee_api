@@ -12,7 +12,7 @@ using thoeun_coffee.Data;
 namespace thoeun_coffee.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241224010615_InitialDb_v1")]
+    [Migration("20241224021132_InitialDb_v1")]
     partial class InitialDb_v1
     {
         /// <inheritdoc />
