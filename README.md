@@ -28,22 +28,26 @@
    git clone https://github.com/RABUNTHOEUN/coffee_api.git
 Create the Database:
 
-Create a new database named coffee in MySQL.
+Create a new database named ### coffee in MySQL.
 Apply Migrations:
 
 Run the following command to apply the database migration:
 
-dotnet ef database update
+    ```bash
+    dotnet ef database update
 If no migration exists, create one using:
 
-dotnet ef migrations add InitialCreate
+    ```bash
+    dotnet ef migrations add InitialCreate
 Then, run the update command again:
 
-dotnet ef database update
-Run the Application:
+    ```bash
+    dotnet ef database update
+### Run the Application:
 
 
-dotnet watch run
+    ```bash
+    dotnet watch run
 Steps to Run the Dashboard:
 Clone the Dashboard Repository:
 
