@@ -1,4 +1,9 @@
-# coffee_api
+# Coffee API
+
+![Image 1](./public/1.png "Image 1")
+![Image 2](./public/2.png "Image 2")
+![Image 3](./public/3.png "Image 3")
+![Image 4](./public/4.png "Image 4")
 
 ## Relation
 
