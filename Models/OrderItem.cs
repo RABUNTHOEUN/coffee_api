@@ -11,7 +11,7 @@ namespace thoeun_coffee.Models
         public decimal Price { get; set; }
         [JsonIgnore]
         public Order? Order { get; set; }
-        [JsonIgnore]
+        // [JsonIgnore]
         public Product? Product { get; set; }
     }
 }

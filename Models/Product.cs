@@ -19,6 +19,7 @@ namespace thoeun_coffee.Models
 
         [JsonIgnore]
         public Inventory? Inventories { get; set; }
+        [JsonIgnore]
         public List<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
         public List<Review> Reviews { get; set; } = new List<Review>();
     }

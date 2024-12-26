@@ -15,7 +15,7 @@ namespace thoeun_coffee.Models
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
 
-        // [JsonIgnore]
+        [JsonIgnore]
         public List<Order> orders{ get; set; } = new List<Order>();
         // [JsonIgnore]
         public List<Review> Reviews { get; set; } = new List<Review>();

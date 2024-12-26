@@ -1,11 +1,12 @@
 {
   "Version": 1,
-  "Hash": "PqpiCtaadSE/ZnALLTrF5qHgDyYv1gjvYuR95RFwTdg=",
+  "Hash": "TZwIaCKjDkMFYyWkdYftd2DRggOiDl9U+UhGN6AQrNM=",
   "Source": "thoeun_coffee",
   "BasePath": "_content/thoeun_coffee",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
   "DiscoveryPatterns": [],
-  "Assets": []
+  "Assets": [],
+  "Endpoints": []
 }
