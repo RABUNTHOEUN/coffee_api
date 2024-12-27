@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using coffee_api.Dtos;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using thoeun_coffee.Data;
 using thoeun_coffee.Models;
@@ -48,34 +49,78 @@ namespace thoeun_coffee.Controllers
         }
 
         // PUT: api/users/5
+        // [HttpPut("{id}")]
+        // public async Task<IActionResult> UpdateUser(int id, User user)
+        // {
+        //     if (id != user.Id)
+        //     {
+        //         return BadRequest();
+        //     }
+
+        //     _context.Entry(user).State = EntityState.Modified;
+
+        //     try
+        //     {
+        //         await _context.SaveChangesAsync();
+        //     }
+        //     catch (DbUpdateConcurrencyException)
+        //     {
+        //         if (!UserExists(id))
+        //         {
+        //             return NotFound();
+        //         }
+        //         else
+        //         {
+        //             throw;
+        //         }
+        //     }
+
+        //     return NoContent();
+        // }
+
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUser(int id, User user)
+        public async Task<IActionResult> UpdateUser(int id, [FromBody] UserUpdateDto updateDto)
         {
-            if (id != user.Id)
+            // Find the user by ID
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
             {
-                return BadRequest();
+                return NotFound(new { message = "User not found" });
             }
 
-            _context.Entry(user).State = EntityState.Modified;
+            // Update the user properties
+            user.FirstName = updateDto.FirstName;
+            user.LastName = updateDto.LastName;
+            user.Email = updateDto.Email;
+            user.Role = updateDto.Role;
+            user.PhoneNumber = updateDto.PhoneNumber;
+            user.UpdatedAt = DateTime.UtcNow;
 
+            // Save changes to the database
             try
             {
                 await _context.SaveChangesAsync();
+                return Ok(new
+                {
+                    message = "User updated successfully",
+                    User = new
+                    {
+                        Id = user.Id,
+                        FirstName = user.FirstName,
+                        LastName = user.LastName,
+                        Email = user.Email,
+                        Role = user.Role,
+                        PhoneNumber = user.PhoneNumber,
+                        UpdatedAt = user.UpdatedAt
+                    }
+                });
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception ex)
             {
-                if (!UserExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return StatusCode(500, new { message = "An error occurred while updating the user", error = ex.Message });
             }
-
-            return NoContent();
         }
+
 
         // DELETE: api/users/5
         [HttpDelete("{id}")]
