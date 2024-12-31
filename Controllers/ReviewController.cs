@@ -5,109 +5,97 @@ using thoeun_coffee.Models;
 
 namespace thoeun_coffee.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class ReviewController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly AppDbContext _dbContext;
 
-        public ReviewController(AppDbContext context)
+        public ReviewController(AppDbContext dbContext)
         {
-            _context = context;
+            _dbContext = dbContext;
         }
 
         // GET: api/Review
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Review>>> GetReviews()
+        public async Task<IActionResult> GetAllReviews()
         {
-            return await _context.Reviews.Include(r => r.User)
-                                         .Include(r => r.Product)
-                                         .ToListAsync();
+            var reviews = await _dbContext.Reviews
+                                          .Include(r => r.User)
+                                          .Include(r => r.Product)
+                                          .ToListAsync();
+            return Ok(reviews);
         }
 
-        // GET: api/Review/5
+        // GET: api/Review/{id}
         [HttpGet("{id}")]
-        public async Task<ActionResult<Review>> GetReview(int id)
+        public async Task<IActionResult> GetReviewById(int id)
         {
-            var review = await _context.Reviews.Include(r => r.User)
-                                               .Include(r => r.Product)
-                                               .FirstOrDefaultAsync(r => r.ReviewId == id);
-
+            var review = await _dbContext.Reviews
+                                         .Include(r => r.User)
+                                         .Include(r => r.Product)
+                                         .FirstOrDefaultAsync(r => r.ReviewId == id);
             if (review == null)
             {
-                return NotFound();
+                return NotFound(new { message = "Review not found." });
             }
-
-            return review;
+            return Ok(review);
         }
 
         // POST: api/Review
         [HttpPost]
-        public async Task<ActionResult<Review>> PostReview(Review review)
+        public async Task<IActionResult> CreateReview([FromBody] Review newReview)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _context.Reviews.Add(review);
-            await _context.SaveChangesAsync();
+            _dbContext.Reviews.Add(newReview);
+            await _dbContext.SaveChangesAsync();
 
-            return CreatedAtAction("GetReview", new { id = review.ReviewId }, review);
+            return CreatedAtAction(nameof(GetReviewById), new { id = newReview.ReviewId }, newReview);
         }
 
-        // PUT: api/Review/5
+        // PUT: api/Review/{id}
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutReview(int id, Review review)
+        public async Task<IActionResult> UpdateReview(int id, [FromBody] Review updatedReview)
         {
-            if (id != review.ReviewId)
+            if (!ModelState.IsValid)
             {
-                return BadRequest();
+                return BadRequest(ModelState);
             }
 
-            var existingReview = await _context.Reviews.FindAsync(id);
+            var existingReview = await _dbContext.Reviews.FindAsync(id);
             if (existingReview == null)
             {
-                return NotFound();
+                return NotFound(new { message = "Review not found." });
             }
 
-            existingReview.Rating = review.Rating;
-            existingReview.ReviewText = review.ReviewText;
-            existingReview.ReviewDate = review.ReviewDate; // Optional update of the review date
+            existingReview.Rating = updatedReview.Rating;
+            existingReview.ReviewText = updatedReview.ReviewText;
+            existingReview.ReviewDate = updatedReview.ReviewDate;
+            existingReview.UserId = updatedReview.UserId;
+            existingReview.ProductId = updatedReview.ProductId;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!_context.Reviews.Any(r => r.ReviewId == id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            await _dbContext.SaveChangesAsync();
+            return Ok(existingReview);
         }
 
-        // DELETE: api/Review/5
+        // DELETE: api/Review/{id}
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteReview(int id)
         {
-            var review = await _context.Reviews.FindAsync(id);
+            var review = await _dbContext.Reviews.FindAsync(id);
             if (review == null)
             {
-                return NotFound();
+                return NotFound(new { message = "Review not found." });
             }
 
-            _context.Reviews.Remove(review);
-            await _context.SaveChangesAsync();
+            _dbContext.Reviews.Remove(review);
+            await _dbContext.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(new { message = "Review deleted successfully." });
         }
     }
 }

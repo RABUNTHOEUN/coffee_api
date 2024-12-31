@@ -32,3 +32,11 @@ namespace thoeun_coffee.Models
         }
     }
 }
+
+
+// {
+//   "userId": 1,
+//   "startTime": "2024-06-22T09:00:00",
+//   "endTime": "2024-06-22T17:00:00",
+//   "shiftDate": "2025-06-22"
+// }

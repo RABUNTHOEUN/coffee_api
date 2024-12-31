@@ -13,3 +13,12 @@
         public Product? Product { get; set; }
     }
 }
+
+
+// {
+//     "userId": 1,
+//     "productId": 101,
+//     "rating": 5,
+//     "reviewText": "Great product!",
+//     "reviewDate": "2024-12-31"
+// }

@@ -11,3 +11,11 @@
         public Order? Order { get; set; }
     }
 }
+
+
+// {
+//     "orderId": 123,
+//     "paymentMethod": "credit_card",
+//     "amount": 49.99,
+//     "paymentDate": "2024-12-31T10:00:00"
+// }

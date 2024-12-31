@@ -5,114 +5,110 @@ using thoeun_coffee.Models;
 
 namespace thoeun_coffee.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class StaffShiftController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly AppDbContext _dbContext;
 
-        public StaffShiftController(AppDbContext context)
+        public StaffShiftController(AppDbContext dbContext)
         {
-            _context = context;
+            _dbContext = dbContext;
         }
 
         // GET: api/StaffShift
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<StaffShift>>> GetStaffShifts()
+        public async Task<IActionResult> GetAllShifts()
         {
-            return await _context.StaffShifts.Include(s => s.User)
-                                             .ToListAsync();
+            var shifts = await _dbContext.StaffShifts.Include(s => s.User).ToListAsync();
+            return Ok(shifts);
         }
 
-        // GET: api/StaffShift/5
+        // GET: api/StaffShift/{id}
         [HttpGet("{id}")]
-        public async Task<ActionResult<StaffShift>> GetStaffShift(int id)
+        public async Task<IActionResult> GetShiftById(int id)
         {
-            var staffShift = await _context.StaffShifts.Include(s => s.User)
-                                                       .FirstOrDefaultAsync(s => s.ShiftId == id);
-
-            if (staffShift == null)
+            var shift = await _dbContext.StaffShifts.Include(s => s.User).FirstOrDefaultAsync(s => s.ShiftId == id);
+            if (shift == null)
             {
-                return NotFound();
+                return NotFound(new { success = false, message = "Shift not found." });
             }
-
-            return staffShift;
+            return Ok(shift);
         }
 
         // POST: api/StaffShift
         [HttpPost]
-        public async Task<ActionResult<StaffShift>> PostStaffShift(StaffShift staffShift)
+        public async Task<IActionResult> CreateShift([FromBody] StaffShift newShift)
         {
-            if (!staffShift.IsValidShift())
+            if (!ModelState.IsValid)
             {
-                return BadRequest("StartTime must be earlier than EndTime.");
+                return BadRequest(new { success = false, message = "Invalid data.", errors = ModelState.Values });
             }
 
-            if (!staffShift.IsShiftInFuture())
+            if (!newShift.IsValidShift())
             {
-                return BadRequest("ShiftDate cannot be in the past.");
+                return BadRequest(new { success = false, message = "Start time must be before end time." });
             }
 
-            _context.StaffShifts.Add(staffShift);
-            await _context.SaveChangesAsync();
+            if (!newShift.IsShiftInFuture())
+            {
+                return BadRequest(new { success = false, message = "Shift date cannot be in the past." });
+            }
 
-            return CreatedAtAction("GetStaffShift", new { id = staffShift.ShiftId }, staffShift);
+            _dbContext.StaffShifts.Add(newShift);
+            await _dbContext.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetShiftById), new { id = newShift.ShiftId }, newShift);
         }
 
-        // PUT: api/StaffShift/5
+        // PUT: api/StaffShift/{id}
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutStaffShift(int id, StaffShift staffShift)
+        public async Task<IActionResult> UpdateShift(int id, [FromBody] StaffShift updatedShift)
         {
-            if (id != staffShift.ShiftId)
+            if (!ModelState.IsValid)
             {
-                return BadRequest();
+                return BadRequest(new { success = false, message = "Invalid data.", errors = ModelState.Values });
             }
 
-            if (!staffShift.IsValidShift())
+            var existingShift = await _dbContext.StaffShifts.FindAsync(id);
+            if (existingShift == null)
             {
-                return BadRequest("StartTime must be earlier than EndTime.");
+                return NotFound(new { success = false, message = "Shift not found." });
             }
 
-            if (!staffShift.IsShiftInFuture())
+            if (!updatedShift.IsValidShift())
             {
-                return BadRequest("ShiftDate cannot be in the past.");
+                return BadRequest(new { success = false, message = "Start time must be before end time." });
             }
 
-            _context.Entry(staffShift).State = EntityState.Modified;
-
-            try
+            if (!updatedShift.IsShiftInFuture())
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!_context.StaffShifts.Any(s => s.ShiftId == id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return BadRequest(new { success = false, message = "Shift date cannot be in the past." });
             }
 
-            return NoContent();
+            // Update fields
+            existingShift.UserId = updatedShift.UserId;
+            existingShift.StartTime = updatedShift.StartTime;
+            existingShift.EndTime = updatedShift.EndTime;
+            existingShift.ShiftDate = updatedShift.ShiftDate;
+
+            await _dbContext.SaveChangesAsync();
+            return Ok(existingShift);
         }
 
-        // DELETE: api/StaffShift/5
+        // DELETE: api/StaffShift/{id}
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteStaffShift(int id)
+        public async Task<IActionResult> DeleteShift(int id)
         {
-            var staffShift = await _context.StaffShifts.FindAsync(id);
-            if (staffShift == null)
+            var shift = await _dbContext.StaffShifts.FindAsync(id);
+            if (shift == null)
             {
-                return NotFound();
+                return NotFound(new { success = false, message = "Shift not found." });
             }
 
-            _context.StaffShifts.Remove(staffShift);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            _dbContext.StaffShifts.Remove(shift);
+            await _dbContext.SaveChangesAsync();
+            return Ok(new { success = true, message = "Shift deleted successfully." });
         }
     }
 }

@@ -17,9 +17,9 @@ namespace thoeun_coffee.Models
 
         [JsonIgnore]
         public List<Order> orders{ get; set; } = new List<Order>();
-        // [JsonIgnore]
+        [JsonIgnore]
         public List<Review> Reviews { get; set; } = new List<Review>();
-        // [JsonIgnore]
+        [JsonIgnore]
         public List<StaffShift> StaffShifts { get; set; } = new List<StaffShift>();
     }
 }
