@@ -11,5 +11,8 @@ namespace thoeun_coffee.Models
         public string RoastLevel { get; set; } // 'light', 'medium', 'dark'
         public decimal PricePerKg { get; set; }
         public int StockQuantity { get; set; }
+
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using coffee_api.Dtos.Discount;
 
 namespace coffee_api.Dtos.Product
 {
@@ -16,5 +17,7 @@ namespace coffee_api.Dtos.Product
         public string ImageUrl { get; set; } = string.Empty;
 
         public string CategoryName { get; set; }
+
+        public List<DiscountDto> Discounts { get; set; }
     }
 }

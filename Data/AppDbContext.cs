@@ -25,7 +25,7 @@ namespace thoeun_coffee.Data
                 .HasMany(u => u.orders)
                 .WithOne(o => o.User)
                 .HasForeignKey(o => o.UserId);
-                
+
 
             modelBuilder.Entity<Order>()
                 .HasMany(o => o.OrderItems)
@@ -67,6 +67,12 @@ namespace thoeun_coffee.Data
                 .HasOne(o => o.Payment)
                 .WithOne(p => p.Order)
                 .HasForeignKey<Payment>(p => p.OrderId);
+                
+            modelBuilder.Entity<Discount>()
+                           .HasOne(d => d.Product)   // Discount has one Product
+                           .WithMany(p => p.Discounts)  // Product can have many Discounts
+                           .HasForeignKey(d => d.ProductId) // Foreign key in Discount table
+                           .OnDelete(DeleteBehavior.Cascade);  // When Product is deleted, also delete related Discounts
 
             base.OnModelCreating(modelBuilder);
         }

@@ -2943,24 +2943,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\thoeu\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\DELL\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\YEAR IV\\ASP.Net\\Coffee\\coffee_api\\thoeun_coffee.csproj",
+      "projectUniqueName": "D:\\YEAR IV\\coffee\\coffee_api\\thoeun_coffee.csproj",
       "projectName": "thoeun_coffee",
-      "projectPath": "D:\\YEAR IV\\ASP.Net\\Coffee\\coffee_api\\thoeun_coffee.csproj",
-      "packagesPath": "C:\\Users\\thoeu\\.nuget\\packages\\",
-      "outputPath": "D:\\YEAR IV\\ASP.Net\\Coffee\\coffee_api\\obj\\",
+      "projectPath": "D:\\YEAR IV\\coffee\\coffee_api\\thoeun_coffee.csproj",
+      "packagesPath": "C:\\Users\\DELL\\.nuget\\packages\\",
+      "outputPath": "D:\\YEAR IV\\coffee\\coffee_api\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\thoeu\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Users\\DELL\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -2984,9 +2979,8 @@
       "restoreAuditProperties": {
         "enableAudit": "true",
         "auditLevel": "low",
-        "auditMode": "all"
-      },
-      "SdkAnalysisLevel": "9.0.100"
+        "auditMode": "direct"
+      }
     },
     "frameworks": {
       "net8.0": {
@@ -3046,7 +3040,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.100/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.404/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

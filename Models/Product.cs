@@ -23,5 +23,7 @@ namespace thoeun_coffee.Models
         public List<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
         [JsonIgnore]
         public List<Review> Reviews { get; set; } = new List<Review>();
+        [JsonIgnore]
+        public List<Discount> Discounts { get; set; } = new List<Discount>();
     }
 }

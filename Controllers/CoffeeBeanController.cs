@@ -19,8 +19,16 @@ namespace thoeun_coffee.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CoffeeBean>>> GetCoffeeBeans()
         {
-            return await _context.CoffeeBeans.ToListAsync();
+            // Fetch CoffeeBeans and order them by BeanId in descending order (latest first)
+            var coffeeBeans = await _context.CoffeeBeans
+                .OrderByDescending(c => c.BeanId)  // Order by BeanId in descending order
+                .ToListAsync();
+
+            // Return the ordered list of CoffeeBeans
+            return Ok(coffeeBeans);
         }
+
+
 
         // GET: api/CoffeeBean/5
         [HttpGet("{id}")]

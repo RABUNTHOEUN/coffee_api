@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using thoeun_coffee.Data;
 
@@ -11,9 +12,11 @@ using thoeun_coffee.Data;
 namespace thoeun_coffee.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250106125603_InitV_2")]
+    partial class InitV_2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -111,15 +114,10 @@ namespace thoeun_coffee.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int?>("ProductId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("DiscountId");
-
-                    b.HasIndex("ProductId");
 
                     b.ToTable("Discounts");
                 });
@@ -386,16 +384,6 @@ namespace thoeun_coffee.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("thoeun_coffee.Models.Discount", b =>
-                {
-                    b.HasOne("thoeun_coffee.Models.Product", "Product")
-                        .WithMany("Discounts")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.Navigation("Product");
-                });
-
             modelBuilder.Entity("thoeun_coffee.Models.Inventory", b =>
                 {
                     b.HasOne("thoeun_coffee.Models.Product", "Product")
@@ -485,8 +473,6 @@ namespace thoeun_coffee.Migrations
 
             modelBuilder.Entity("thoeun_coffee.Models.Product", b =>
                 {
-                    b.Navigation("Discounts");
-
                     b.Navigation("Inventories");
 
                     b.Navigation("OrderItems");
